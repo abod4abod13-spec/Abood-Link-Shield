@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Abood Link Shield Pro - Complete UI & Fullscreen Redirect Styles (2026)
+   Abood Link Shield Pro - Styles (2026)
    ========================================================================== */
 
 :root {
@@ -33,9 +33,7 @@ body {
     line-height: 1.6;
 }
 
-/* ==========================================================================
-   واجهة التوجيه بملء الشاشة للزائر الحقيقي (Fullscreen Redirect)
-   ========================================================================== */
+/* واجهة التوجيه المشفرة بملء الشاشة */
 .fullscreen-redirect-view {
     position: fixed;
     top: 0;
@@ -54,8 +52,8 @@ body {
 }
 
 .redirect-glass-card {
-    background: rgba(15, 23, 42, 0.92);
-    backdrop-filter: blur(20px);
+    background: rgba(15, 23, 42, 0.94);
+    backdrop-filter: blur(25px);
     border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 28px;
     padding: 35px 25px;
@@ -91,7 +89,6 @@ body {
     margin-bottom: 20px;
 }
 
-/* صندوق الإعلانات التفاعلي التلقائي */
 .ad-banner-box {
     background: rgba(236, 72, 153, 0.12);
     border: 1px dashed var(--color-pink);
@@ -104,7 +101,6 @@ body {
     transition: all 0.3s ease;
 }
 
-/* العداد */
 .timer-box {
     width: 130px;
     height: 130px;
@@ -136,9 +132,7 @@ body {
     border-radius: 14px;
 }
 
-/* ==========================================================================
-   باقي عناصر الموقع الرئيسي ولوحة التحكم
-   ========================================================================== */
+/* لوحة التحكم الرئيسية */
 #scrollProgress {
     position: fixed;
     top: 0;
