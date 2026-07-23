@@ -1,5 +1,5 @@
 // ==========================================================================
-// Abood Link Shield - Core Logic & Redirect Engine (2026)
+// Abood Link Shield Pro - Core & Fullscreen Redirect Engine (2026)
 // ==========================================================================
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
         topBtn.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
     }
 
-    // 3. البروفايل والتنبيهات المباشرة
+    // 3. البروفايل والتنبيهات
     const userNameInput = document.getElementById("userNameInput");
     const saveProfileBtn = document.getElementById("saveProfileBtn");
     const genderBtns = document.querySelectorAll(".gender-btn");
@@ -69,7 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 savedUser.name = val;
                 localStorage.setItem("abood_shield_user", JSON.stringify(savedUser));
                 const gIcon = savedUser.gender === "male" ? "👨‍✈️ ♂️" : "👩‍✈️ ♀️";
-                showToast(`✅ أهلاً بك ${savedUser.name} (${gIcon})! تم حفظ بروفايلك.`);
+                showToast(`✅ أهلاً بك ${savedUser.name} (${gIcon})! تم حفظ البروفايل.`);
             }
         });
     }
@@ -84,111 +84,195 @@ document.addEventListener("DOMContentLoaded", () => {
         setTimeout(() => { toast.remove(); }, 4000);
     }
 
-    // 4. المحرك الرئيسي لاختصار وفحص الروابط
+    // 4. التبديل بين وضع رابط أو رفع ملف
+    const tabTypeUrl = document.getElementById("tabTypeUrl");
+    const tabTypeFile = document.getElementById("tabTypeFile");
+    const urlInputContainer = document.getElementById("urlInputContainer");
+    const fileInputContainer = document.getElementById("fileInputContainer");
+    const fileUploaderInput = document.getElementById("fileUploaderInput");
+    const fileStatusText = document.getElementById("fileStatusText");
+
+    let inputMode = "url"; // url or file
+    let uploadedFileBase64 = "";
+
+    if (tabTypeUrl && tabTypeFile) {
+        tabTypeUrl.onclick = () => {
+            tabTypeUrl.classList.add("active");
+            tabTypeFile.classList.remove("active");
+            urlInputContainer.style.display = "block";
+            fileInputContainer.style.display = "none";
+            inputMode = "url";
+        };
+        tabTypeFile.onclick = () => {
+            tabTypeFile.classList.add("active");
+            tabTypeUrl.classList.remove("active");
+            fileInputContainer.style.display = "block";
+            urlInputContainer.style.display = "none";
+            inputMode = "file";
+        };
+    }
+
+    if (fileUploaderInput) {
+        fileUploaderInput.addEventListener("change", (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    uploadedFileBase64 = event.target.result;
+                    fileStatusText.textContent = `✅ تم رفع الملف بنجاح: ${file.name} (${Math.round(file.size / 1024)} KB)`;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+
+    // 5. محرك الروابط وإنشاء الحماية والإعلانات
     const targetUrlInput = document.getElementById("targetUrlInput");
     const timerSelect = document.getElementById("timerSelect");
     const linkTitleInput = document.getElementById("linkTitleInput");
+    const adIdInput = document.getElementById("adIdInput");
     const generateShieldBtn = document.getElementById("generateShieldBtn");
 
     const timerDisplay = document.getElementById("timerDisplay");
     const previewTitleDisplay = document.getElementById("previewTitleDisplay");
     const shieldStatusBadge = document.getElementById("shieldStatusBadge");
     const startShieldBtn = document.getElementById("startShieldBtn");
-    const goTargetBtn = document.getElementById("goTargetBtn");
 
     const resultBox = document.getElementById("resultBox");
     const generatedUrlInput = document.getElementById("generatedUrlInput");
     const copyUrlBtn = document.getElementById("copyUrlBtn");
-    const openUrlNewTabBtn = document.getElementById("openUrlNewTabBtn");
+    const testLiveUrlBtn = document.getElementById("testLiveUrlBtn");
 
-    let activeTargetUrl = "";
-    let timerSeconds = 10;
-    let countdownInterval = null;
+    // عناصر نافذة صفحة الزائر بملء الشاشة (Fullscreen Redirect Overlay)
+    const fullscreenRedirectOverlay = document.getElementById("fullscreenRedirectOverlay");
+    const redirectTitleText = document.getElementById("redirectTitleText");
+    const redirectTimerDisplay = document.getElementById("redirectTimerDisplay");
+    const finalRedirectBtn = document.getElementById("finalRedirectBtn");
+    const adSlotTop = document.getElementById("adSlotTop");
+    const adSlotBottom = document.getElementById("adSlotBottom");
 
-    // التعامل مع المعلمات المستلمة بـ URL في حال كان الموقع مستقبِلاً لرابط محمي
+    let liveCountdownInterval = null;
+
+    // فحص إذا كان الرابط يفتح بصفحة الزائر (يحتوي على بارامترات)
     const urlParams = new URLSearchParams(window.location.search);
-    const incomingTarget = urlParams.get("target");
+    const targetParam = urlParams.get("target");
+    const fileParam = urlParams.get("file");
+    const timeParam = urlParams.get("time");
+    const titleParam = urlParams.get("title");
+    const adIdParam = urlParams.get("adid");
 
-    if (incomingTarget) {
-        activeTargetUrl = decodeURIComponent(incomingTarget);
-        previewTitleDisplay.textContent = urlParams.get("title") || "الرابط المحمي جاهز للانتقال";
-        timerSeconds = parseInt(urlParams.get("time")) || 10;
-        timerDisplay.textContent = timerSeconds;
-        shieldStatusBadge.textContent = "🛡️ رابط محمي مستلم";
-    }
+    if (targetParam || fileParam) {
+        // تشغيل صفحة الزائر بملء الشاشة مباشرة
+        if (fullscreenRedirectOverlay) {
+            fullscreenRedirectOverlay.style.display = "flex";
+            redirectTitleText.textContent = titleParam ? decodeURIComponent(titleParam) : "جاري فحص وتأمين الرابط المحمي...";
+            
+            let remainingTime = timeParam ? parseInt(timeParam) : 15;
+            redirectTimerDisplay.textContent = remainingTime;
 
-    // إنشاء رابط محمي
-    if (generateShieldBtn) {
-        generateShieldBtn.addEventListener("click", () => {
-            const rawUrl = targetUrlInput.value.trim();
-            if (!rawUrl) {
-                alert("يرجى إدخال الرابط الأصلي أولاً!");
-                return;
+            // تفعيل مساحات الإعلانات إذا أدخل المستخدم معرف الإعلانات
+            if (adIdParam) {
+                adSlotTop.style.display = "block";
+                adSlotBottom.style.display = "block";
+                adSlotTop.innerHTML = `📢 [إعلان ممول نشط - ID: ${decodeURIComponent(adIdParam)}]`;
+                adSlotBottom.innerHTML = `📢 [إعلان بنري مدعوم - ID: ${decodeURIComponent(adIdParam)}]`;
             }
 
-            activeTargetUrl = rawUrl;
-            timerSeconds = parseInt(timerSelect.value);
-            const titleVal = linkTitleInput.value.trim() || "رابط محمي عبر Abood Shield";
+            let countdown = setInterval(() => {
+                remainingTime--;
+                redirectTimerDisplay.textContent = remainingTime;
 
-            // تكوين الرابط المحمي
+                if (remainingTime <= 0) {
+                    clearInterval(countdown);
+                    finalRedirectBtn.disabled = false;
+                    finalRedirectBtn.textContent = "🚀 الانتقال الفوري إلى المحتوى النهائي";
+                    finalRedirectBtn.style.background = "linear-gradient(135deg, #10b981, #059669)";
+                    
+                    const destinationUrl = targetParam ? decodeURIComponent(targetParam) : decodeURIComponent(fileParam);
+                    finalRedirectBtn.onclick = () => {
+                        window.location.href = destinationUrl;
+                    };
+                }
+            }, 1000);
+        }
+    }
+
+    // زر توليد الرابط المحمي
+    if (generateShieldBtn) {
+        generateShieldBtn.addEventListener("click", () => {
+            let finalTarget = "";
+            if (inputMode === "url") {
+                finalTarget = targetUrlInput.value.trim();
+                if (!finalTarget) {
+                    alert("يرجى إدخال الرابط الأصلي أولاً!");
+                    return;
+                }
+            } else {
+                if (!uploadedFileBase64) {
+                    alert("يرجى رفع ملف من جهازك أولاً!");
+                    return;
+                }
+                finalTarget = uploadedFileBase64;
+            }
+
+            const selectedSeconds = timerSelect.value;
+            const titleVal = linkTitleInput.value.trim() || "رابط محمي عبر Abood Shield Pro";
+            const adIdVal = adIdInput.value.trim();
+
             const baseUrl = window.location.href.split('?')[0];
-            const protectedUrl = `${baseUrl}?target=${encodeURIComponent(rawUrl)}&time=${timerSeconds}&title=${encodeURIComponent(titleVal)}`;
+            let protectedUrl = "";
+
+            if (inputMode === "url") {
+                protectedUrl = `${baseUrl}?target=${encodeURIComponent(finalTarget)}&time=${selectedSeconds}&title=${encodeURIComponent(titleVal)}&adid=${encodeURIComponent(adIdVal)}`;
+            } else {
+                protectedUrl = `${baseUrl}?file=${encodeURIComponent(finalTarget)}&time=${selectedSeconds}&title=${encodeURIComponent(titleVal)}&adid=${encodeURIComponent(adIdVal)}`;
+            }
 
             generatedUrlInput.value = protectedUrl;
             resultBox.style.display = "block";
             previewTitleDisplay.textContent = titleVal;
-            timerDisplay.textContent = timerSeconds;
+            timerDisplay.textContent = selectedSeconds;
 
             const genderIcon = savedUser.gender === "male" ? "👨‍✈️ ♂️" : "👩‍✈️ ♀️";
-            showToast(`🎉 قام <strong>${savedUser.name} (${genderIcon})</strong> بإنشاء رابط محمي جديد بنجاح!`);
+            showToast(`🎉 قام <strong>${savedUser.name} (${genderIcon})</strong> بإنشاء رابط محمي بمدة ${selectedSeconds} ثانية ومعرف إعلانات بنجاح!`);
         });
     }
 
-    // بدء محاكاة فحص الأمان والعد التنازلي
+    // تجربة محاكاة التوجيه محلياً في لوحة التحكم
     if (startShieldBtn) {
         startShieldBtn.addEventListener("click", () => {
-            if (!activeTargetUrl) {
-                alert("أدخل رابطاً أو أنشئ رابطاً محميأً أولاً!");
-                return;
-            }
-
-            startShieldBtn.disabled = true;
-            shieldStatusBadge.textContent = "⏳ جاري فحص سلامة الرابط...";
-            let currentTimer = timerSeconds;
+            const sampleTime = timerSelect.value;
+            let currentTimer = parseInt(sampleTime);
             timerDisplay.textContent = currentTimer;
+            shieldStatusBadge.textContent = "⏳ جاري محاكاة صفحة التوجيه والعد...";
 
-            clearInterval(countdownInterval);
-            countdownInterval = setInterval(() => {
+            clearInterval(liveCountdownInterval);
+            liveCountdownInterval = setInterval(() => {
                 currentTimer--;
                 timerDisplay.textContent = currentTimer;
 
                 if (currentTimer <= 0) {
-                    clearInterval(countdownInterval);
-                    shieldStatusBadge.textContent = "✅ الرابط آمن تماماً! اضغط للانتقال";
-                    goTargetBtn.disabled = false;
-                    goTargetBtn.textContent = "🚀 الانتقال إلى الرابط النهائي الآن";
-                    goTargetBtn.onclick = () => {
-                        window.open(activeTargetUrl, "_blank");
-                    };
+                    clearInterval(liveCountdownInterval);
+                    shieldStatusBadge.textContent = "✅ اكتمل العد التجريبي بنجاح!";
+                    alert("🎉 التجربة ناجحة تماماً! الرابط جاهز للاستخدام ومشاركة الزوار.");
                 }
             }, 1000);
         });
     }
 
-    // نسخ وتجربة الأزرار
+    // أزرار النسخ والاختبار
     if (copyUrlBtn) {
         copyUrlBtn.onclick = () => {
             navigator.clipboard.writeText(generatedUrlInput.value);
-            showToast("📋 تم نسخ الرابط المحمي بنجاح!");
+            showToast("📋 تم نسخ الرابط المحمي الإعلاني بنجاح!");
         };
     }
 
-    if (openUrlNewTabBtn) {
-        openUrlNewTabBtn.onclick = () => {
+    if (testLiveUrlBtn) {
+        testLiveUrlBtn.onclick = () => {
             if (generatedUrlInput.value) {
                 window.open(generatedUrlInput.value, "_blank");
             }
         };
     }
 });
-
