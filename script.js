@@ -1,34 +1,29 @@
 // ==========================================================================
-// Abood Link Shield Pro - Complete Logic Engine (2026)
+// Abood Link Shield Pro - Secure Engine (2026)
 // ==========================================================================
 
 document.addEventListener("DOMContentLoaded", () => {
 
-    // 1. فحص معلمات الـ URL عند فتح الموقع (هل الزائر يفتح رابط محمي؟)
     const urlParams = new URLSearchParams(window.location.search);
-    const targetParam = urlParams.get("target");
-    const fileParam = urlParams.get("file");
-    const timeParam = urlParams.get("time");
-    const titleParam = urlParams.get("title");
-    const creatorParam = urlParams.get("creator");
-    const adIdParam = urlParams.get("adid");
-    const rotateParam = urlParams.get("rotate");
-    const bgParam = urlParams.get("bg");
+    const shieldParam = urlParams.get("shield"); // البارامتر المشفر الموحد
 
     const redirectView = document.getElementById("redirectView");
     const mainDashboardView = document.getElementById("mainDashboardView");
 
     // ==========================================================================
-    // أ) إذا كان هناك رابط محمي: إخفاء الموقع بالكامل وإظهار صفحة التوجيه فقط
+    // أ) التحقق الفوري: إذا وجدنا بارامتر مشفر، نخفي لوحة التحكم تماماً ونشغل التوجيه الآمن
     // ==========================================================================
-    if (targetParam || fileParam) {
+    if (shieldParam) {
         if (mainDashboardView) mainDashboardView.style.display = "none";
-        if (redirectView) {
-            redirectView.style.display = "flex";
+        if (redirectView) redirectView.style.display = "flex";
 
-            // إعداد خلفية الصفحة المخصصة إذا حددها الناشر
-            if (bgParam) {
-                redirectView.style.backgroundImage = `url('${decodeURIComponent(bgParam)}')`;
+        try {
+            // فك التشفير (Base64 -> JSON)
+            const jsonString = decodeURIComponent(escape(atob(shieldParam)));
+            const shieldData = JSON.parse(jsonString);
+
+            if (shieldData.bg) {
+                redirectView.style.backgroundImage = `url('${shieldData.bg}')`;
             }
 
             const redirectTitleDisplay = document.getElementById("redirectTitleDisplay");
@@ -37,25 +32,25 @@ document.addEventListener("DOMContentLoaded", () => {
             const finalRedirectBtn = document.getElementById("finalRedirectBtn");
             const adBannerText = document.getElementById("adBannerText");
 
-            redirectTitleDisplay.textContent = titleParam ? decodeURIComponent(titleParam) : "جاري فحص وتأمين الرابط المحمي...";
-            redirectCreatorDisplay.textContent = creatorParam ? `الرابط مُقدَّم لك بواسطة: ${decodeURIComponent(creatorParam)} 👑` : "الرابط مُقدَّم بواسطة: عبدالله";
+            redirectTitleDisplay.textContent = shieldData.title || "جاري فحص وتأمين الرابط المحمي...";
+            redirectCreatorDisplay.textContent = shieldData.creator ? `الرابط مُقدَّم لك بواسطة: ${shieldData.creator} 👑` : "الرابط مُقدَّم بواسطة: عبدالله";
 
-            let totalSeconds = timeParam ? parseInt(timeParam) : 60;
-            let rotateIntervalSeconds = rotateParam ? parseInt(rotateParam) : 10;
+            let totalSeconds = shieldData.time ? parseInt(shieldData.time) : 60;
+            let rotateIntervalSeconds = shieldData.rotate ? parseInt(shieldData.rotate) : 10;
             redirectTimerDisplay.textContent = totalSeconds;
 
-            // آلية تدوير وتغيير الإعلانات تلقائياً خلال مدة العداد
+            // نظام تدوير الإعلانات حسب الثانية بدقة
             let adCounter = 1;
             function rotateAdMessage() {
-                const adPublisher = adIdParam ? decodeURIComponent(adIdParam) : "DEFAULT-PUB-2026";
-                adBannerText.textContent = `📢 [إعلان نشط #${adCounter} - المعرف: ${adPublisher}] - اضغط للتفاعل!`;
+                const publisherId = shieldData.adid || "SECURE-PUB-2026";
+                adBannerText.textContent = `📢 [إعلان نشط #${adCounter} | مُعرّف الناشر: ${publisherId}]`;
                 adCounter++;
             }
 
-            rotateAdMessage(); // تشغيل الإعلان الأول
+            rotateAdMessage();
             let adRotationTimer = setInterval(rotateAdMessage, rotateIntervalSeconds * 1000);
 
-            // تشغيل العداد التنازلي للتوجيه
+            // عداد الانتظار
             let countdownTimer = setInterval(() => {
                 totalSeconds--;
                 redirectTimerDisplay.textContent = totalSeconds;
@@ -68,18 +63,23 @@ document.addEventListener("DOMContentLoaded", () => {
                     finalRedirectBtn.textContent = "🚀 الانتقال إلى المحتوى النهائي الآن";
                     finalRedirectBtn.style.background = "linear-gradient(135deg, #10b981, #059669)";
 
-                    const destination = targetParam ? decodeURIComponent(targetParam) : decodeURIComponent(fileParam);
                     finalRedirectBtn.onclick = () => {
-                        window.location.href = destination;
+                        window.location.href = shieldData.target;
                     };
                 }
             }, 1000);
+
+        } catch (err) {
+            console.error("Shield decoding error:", err);
+            if (redirectView) {
+                redirectView.innerHTML = `<div class="redirect-glass-card"><h2>❌ عذراً، الرابط التوجيهي التالف أو غير صالح!</h2></div>`;
+            }
         }
-        return; // إنهاء التنفيذ لعدم تشغيل أكواد لوحة التحكم للزائر
+        return; // منع تشغيل لوحة التحكم نهائياً
     }
 
     // ==========================================================================
-    // ب) تشغيل لوحة التحكم العادية للمستخدم في حال عدم وجود معلمات توجيه
+    // ب) تشغيل لوحة التحكم الطبيعية لصاحب الموقع
     // ==========================================================================
     window.addEventListener("load", () => {
         const splash = document.getElementById("splash");
@@ -106,7 +106,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (topBtn) topBtn.onclick = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
-    // البروفايل والتنبيهات
+    // إدارة البروفايل
     const userNameInput = document.getElementById("userNameInput");
     const creatorNameInput = document.getElementById("creatorNameInput");
     const saveProfileBtn = document.getElementById("saveProfileBtn");
@@ -137,7 +137,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 savedUser.name = val;
                 if (creatorNameInput) creatorNameInput.value = val;
                 localStorage.setItem("abood_shield_user", JSON.stringify(savedUser));
-                showToast(`✅ تم حفظ بروفايلك باسم ${savedUser.name}!`);
+                showToast(`✅ تم حفظ هويتك بنجاح يا ${savedUser.name}!`);
             }
         };
     }
@@ -151,7 +151,7 @@ document.addEventListener("DOMContentLoaded", () => {
         setTimeout(() => toast.remove(), 4000);
     }
 
-    // التبديل بين وضع رابط أو ملف
+    // تبديل بين وضع رابط أو ملف
     const tabTypeUrl = document.getElementById("tabTypeUrl");
     const tabTypeFile = document.getElementById("tabTypeFile");
     const urlInputContainer = document.getElementById("urlInputContainer");
@@ -186,14 +186,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 const reader = new FileReader();
                 reader.onload = (evt) => {
                     uploadedFileBase64 = evt.target.result;
-                    fileStatusText.textContent = `✅ تم تجهيز الملف: ${file.name}`;
+                    fileStatusText.textContent = `✅ تم رفع الملف بنجاح: ${file.name}`;
                 };
                 reader.readAsDataURL(file);
             }
         };
     }
 
-    // انشاء رابط التوجيه
+    // إنشاء الرابط المشفر
     const targetUrlInput = document.getElementById("targetUrlInput");
     const timerSelect = document.getElementById("timerSelect");
     const linkTitleInput = document.getElementById("linkTitleInput");
@@ -214,46 +214,46 @@ document.addEventListener("DOMContentLoaded", () => {
             if (inputMode === "url") {
                 targetVal = targetUrlInput.value.trim();
                 if (!targetVal) {
-                    alert("يرجى أدخل الرابط المطلوب أولاً!");
+                    alert("يرجى إدخال الرابط المطلوب أولاً!");
                     return;
                 }
             } else {
                 if (!uploadedFileBase64) {
-                    alert("يرجى رفع ملف أولاً!");
+                    alert("يرجى رفع الملف من جهازك أولاً!");
                     return;
                 }
                 targetVal = uploadedFileBase64;
             }
 
-            const timeSeconds = timerSelect.value;
-            const titleVal = linkTitleInput.value.trim() || "رابط توجيه محمي";
-            const creatorVal = creatorNameInput.value.trim() || savedUser.name;
-            const rotateVal = adRotateIntervalSelect.value;
-            const adIdVal = adIdInput.value.trim();
-            const bgUrlVal = bgImageUrlInput.value.trim();
+            const shieldPayload = {
+                target: targetVal,
+                time: timerSelect.value,
+                title: linkTitleInput.value.trim() || "رابط توجيه محمي",
+                creator: creatorNameInput.value.trim() || savedUser.name,
+                rotate: adRotateIntervalSelect.value,
+                adid: adIdInput.value.trim(),
+                bg: bgImageUrlInput.value.trim()
+            };
+
+            // تشفير الكائن بالكامل إلى Base64 احترافي ونظيف
+            const jsonString = JSON.stringify(shieldPayload);
+            const encodedPayload = btoa(unescape(encodeURIComponent(jsonString)));
 
             const baseUrl = window.location.href.split('?')[0];
-            let protectedUrl = "";
+            const finalProtectedUrl = `${baseUrl}?shield=${encodedPayload}`;
 
-            if (inputMode === "url") {
-                protectedUrl = `${baseUrl}?target=${encodeURIComponent(targetVal)}&time=${timeSeconds}&title=${encodeURIComponent(titleVal)}&creator=${encodeURIComponent(creatorVal)}&rotate=${rotateVal}&adid=${encodeURIComponent(adIdVal)}&bg=${encodeURIComponent(bgUrlVal)}`;
-            } else {
-                protectedUrl = `${baseUrl}?file=${encodeURIComponent(targetVal)}&time=${timeSeconds}&title=${encodeURIComponent(titleVal)}&creator=${encodeURIComponent(creatorVal)}&rotate=${rotateVal}&adid=${encodeURIComponent(adIdVal)}&bg=${encodeURIComponent(bgUrlVal)}`;
-            }
-
-            generatedUrlInput.value = protectedUrl;
+            generatedUrlInput.value = finalProtectedUrl;
             if (noResultPlaceholder) noResultPlaceholder.style.display = "none";
             resultBox.style.display = "block";
 
-            const gIcon = savedUser.gender === "male" ? "👨‍✈️ ♂️" : "👩‍✈️ ♀️";
-            showToast(`🎉 تم إنشاء رابط التوجيه لـ <strong>${creatorVal} (${gIcon})</strong> بنجاح!`);
+            showToast("🔐 تم تشفير الرابط وإنشاؤه بنجاح تام!");
         };
     }
 
     if (copyUrlBtn) {
         copyUrlBtn.onclick = () => {
             navigator.clipboard.writeText(generatedUrlInput.value);
-            showToast("📋 تم نسخ الرابط المباشر بنجاح!");
+            showToast("📋 تم نسخ الرابط المشفر!");
         };
     }
 
@@ -265,4 +265,3 @@ document.addEventListener("DOMContentLoaded", () => {
         };
     }
 });
-
