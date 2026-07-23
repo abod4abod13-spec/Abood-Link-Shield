@@ -1,16 +1,16 @@
 /* ==========================================================================
-   Abood Link Shield Pro - Ultimate Cyber Theme (2026)
+   Abood Link Shield Pro - Complete UI & Fullscreen Redirect Styles (2026)
    ========================================================================== */
 
 :root {
     --bg-main: #0a0f1c;
-    --bg-card: rgba(19, 27, 46, 0.75);
-    --border-color: rgba(255, 255, 255, 0.08);
+    --bg-card: rgba(19, 27, 46, 0.85);
+    --border-color: rgba(255, 255, 255, 0.1);
     --text-main: #ffffff;
     --text-muted: #94a3b8;
     
     --color-primary: #3b82f6;
-    --color-primary-glow: rgba(59, 130, 246, 0.35);
+    --color-primary-glow: rgba(59, 130, 246, 0.4);
     --color-accent: #10b981;
     --color-pink: #ec4899;
 
@@ -33,6 +33,112 @@ body {
     line-height: 1.6;
 }
 
+/* ==========================================================================
+   واجهة التوجيه بملء الشاشة للزائر الحقيقي (Fullscreen Redirect)
+   ========================================================================== */
+.fullscreen-redirect-view {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #020617;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: 999999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.redirect-glass-card {
+    background: rgba(15, 23, 42, 0.92);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 28px;
+    padding: 35px 25px;
+    max-width: 480px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.9), 0 0 40px var(--color-primary-glow);
+}
+
+.redirect-badge {
+    display: inline-block;
+    background: rgba(59, 130, 246, 0.2);
+    border: 1px solid var(--color-primary);
+    color: #60a5fa;
+    padding: 6px 18px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.redirect-glass-card h1 {
+    font-size: 22px;
+    font-weight: 800;
+    margin-bottom: 8px;
+    color: #ffffff;
+}
+
+.creator-tag {
+    font-size: 14px;
+    color: var(--color-pink);
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+/* صندوق الإعلانات التفاعلي التلقائي */
+.ad-banner-box {
+    background: rgba(236, 72, 153, 0.12);
+    border: 1px dashed var(--color-pink);
+    color: #f472b6;
+    padding: 14px;
+    border-radius: 14px;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+}
+
+/* العداد */
+.timer-box {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    border: 4px solid var(--color-primary);
+    box-shadow: 0 0 25px var(--color-primary-glow);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 15px auto 25px;
+}
+
+.timer-value {
+    font-size: 38px;
+    font-weight: 900;
+    color: #ffffff;
+}
+
+.timer-label {
+    font-size: 11px;
+    color: var(--text-muted);
+}
+
+.redirect-btn {
+    width: 100%;
+    padding: 15px;
+    font-size: 16px;
+    border-radius: 14px;
+}
+
+/* ==========================================================================
+   باقي عناصر الموقع الرئيسي ولوحة التحكم
+   ========================================================================== */
 #scrollProgress {
     position: fixed;
     top: 0;
@@ -59,39 +165,26 @@ body {
 }
 
 .splash-content { text-align: center; }
-.splash-content h1 {
-    font-size: 32px;
-    font-weight: 900;
-    background: linear-gradient(45deg, #fff, var(--color-primary));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
+.splash-content h1 { font-size: 30px; font-weight: 900; }
 
 .logo-circle {
-    width: 90px;
-    height: 90px;
+    width: 80px;
+    height: 80px;
     background: linear-gradient(45deg, var(--color-primary), var(--color-pink));
     border-radius: 50%;
-    margin: 0 auto 25px;
+    margin: 0 auto 20px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 40px;
-    box-shadow: 0 0 30px var(--color-primary-glow);
-    animation: splashPulse 2s infinite alternate;
-}
-
-@keyframes splashPulse {
-    0% { transform: scale(0.9); }
-    100% { transform: scale(1.05); }
+    font-size: 36px;
 }
 
 .loading-bar {
-    width: 220px;
+    width: 200px;
     height: 6px;
     background: rgba(255, 255, 255, 0.05);
     border-radius: 20px;
-    margin: 25px auto 0;
+    margin: 20px auto 0;
     overflow: hidden;
 }
 
@@ -104,63 +197,6 @@ body {
 
 @keyframes fillProgress { 0% { width: 0%; } 100% { width: 100%; } }
 
-.btn-click-effect:active { transform: scale(0.96) !important; }
-
-/* شاشة صفحة التوجيه الخارجية بملء الشاشة */
-.fullscreen-redirect-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    background: radial-gradient(circle at center, #0f172a 0%, #020617 100%);
-    z-index: 20000;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-}
-
-.redirect-card-box {
-    background: rgba(15, 23, 42, 0.95);
-    border: 1px solid var(--color-primary);
-    border-radius: 24px;
-    padding: 30px;
-    max-width: 480px;
-    width: 100%;
-    text-align: center;
-    box-shadow: 0 25px 60px rgba(0,0,0,0.8), 0 0 40px var(--color-primary-glow);
-}
-
-.redirect-header-icon {
-    font-size: 45px;
-    margin-bottom: 10px;
-}
-
-.redirect-card-box h2 {
-    font-size: 22px;
-    font-weight: 800;
-    margin-bottom: 8px;
-}
-
-.redirect-subtitle {
-    font-size: 13px;
-    color: var(--text-muted);
-    margin-bottom: 20px;
-}
-
-.ad-banner-slot {
-    background: rgba(236, 72, 153, 0.1);
-    border: 1px dashed var(--color-pink);
-    color: var(--color-pink);
-    padding: 10px;
-    border-radius: 12px;
-    font-size: 12px;
-    font-weight: 700;
-    margin-bottom: 15px;
-}
-
-/* شريط الإشعارات */
 .toast-container {
     position: fixed;
     top: 80px;
@@ -180,12 +216,7 @@ body {
     border-radius: 12px;
     font-size: 13px;
     font-weight: 700;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
-    animation: toastSlide 0.4s ease, toastFade 0.4s 3.6s forwards;
 }
-
-@keyframes toastSlide { from { transform: translateX(-100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-@keyframes toastFade { to { opacity: 0; transform: translateY(-10px); } }
 
 header {
     background-color: rgba(10, 15, 28, 0.75);
@@ -202,91 +233,31 @@ header {
     align-items: center;
     max-width: 1200px;
     margin: 0 auto;
-    padding: 18px 20px;
+    padding: 16px 20px;
 }
 
-.logo {
-    font-size: 22px;
-    font-weight: 900;
-    background: linear-gradient(45deg, #fff, var(--color-primary));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
+.logo { font-size: 20px; font-weight: 900; color: #fff; }
+.nav-links a { color: var(--text-muted); text-decoration: none; margin-right: 20px; font-weight: 700; }
 
-.nav-links a {
-    color: var(--text-muted);
-    text-decoration: none;
-    margin-right: 25px;
-    font-weight: 700;
-}
+.hero { text-align: center; padding: 50px 20px 20px; }
+.hero h1 { font-size: 30px; font-weight: 900; margin-bottom: 10px; }
+.hero p { color: var(--text-muted); font-size: 15px; }
 
-.hero {
-    text-align: center;
-    padding: 60px 20px 30px;
-    background: radial-gradient(circle at top, rgba(59, 130, 246, 0.15) 0%, transparent 60%);
-}
-
-.hero h1 { font-size: 32px; font-weight: 900; margin-bottom: 15px; }
-.hero p { color: var(--text-muted); font-size: 15px; max-width: 650px; margin: 0 auto; }
-
-.profile-container { max-width: 800px; margin: 0 auto 30px; padding: 0 20px; }
-.profile-card {
+.profile-container, .editor-container { max-width: 1100px; margin: 0 auto 50px; padding: 0 20px; }
+.profile-card, .controls-card, .preview-card {
     background: var(--bg-card);
     border: 1px solid var(--border-color);
-    border-radius: 20px;
+    border-radius: 22px;
     padding: 25px;
-    text-align: center;
 }
 
-.profile-card h2 { font-size: 19px; font-weight: 800; }
-.subtitle { font-size: 13px; color: var(--text-muted); margin-bottom: 15px; }
-
-.profile-form { display: flex; flex-direction: column; gap: 15px; align-items: center; }
-#userNameInput {
-    width: 100%;
-    max-width: 400px;
-    padding: 12px 18px;
-    border-radius: 12px;
-    border: 1px solid var(--border-color);
-    background: rgba(0,0,0,0.3);
-    color: white;
-    font-size: 15px;
-    text-align: center;
-    outline: none;
-}
-
-.gender-selector { display: flex; gap: 12px; }
-.gender-btn {
-    background: rgba(255,255,255,0.05);
-    border: 1px solid var(--border-color);
-    padding: 8px 18px;
-    border-radius: 10px;
-    cursor: pointer;
-    font-weight: 700;
-    color: white;
-    font-size: 14px;
-}
-
-.gender-btn.active { border-color: var(--color-primary); background: rgba(59, 130, 246, 0.2); }
-
-.editor-container { max-width: 1150px; margin: 0 auto 60px; padding: 0 20px; }
-.editor-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+.editor-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; }
 @media (max-width: 850px) { .editor-grid { grid-template-columns: 1fr; } }
 
-.controls-card, .preview-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border-color);
-    border-radius: 24px;
-    padding: 30px;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.3);
-}
+.control-group { margin-bottom: 16px; text-align: right; }
+.control-group label { display: block; font-size: 13px; font-weight: 700; color: var(--text-muted); margin-bottom: 6px; }
 
-.controls-card h2, .preview-card h2 { font-size: 19px; font-weight: 800; margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
-
-.control-group { margin-bottom: 18px; text-align: right; }
-.control-group label { display: block; font-size: 13px; font-weight: 700; color: var(--text-muted); margin-bottom: 8px; }
-
-.type-selector-tabs { display: flex; gap: 10px; margin-bottom: 10px; }
+.type-selector-tabs { display: flex; gap: 10px; }
 .tab-btn {
     flex: 1;
     background: rgba(255,255,255,0.04);
@@ -302,7 +273,7 @@ header {
 
 .styled-select, .styled-input {
     width: 100%;
-    padding: 12px 16px;
+    padding: 12px;
     border-radius: 12px;
     border: 1px solid var(--border-color);
     background: rgba(0,0,0,0.3);
@@ -310,55 +281,6 @@ header {
     font-size: 14px;
     outline: none;
 }
-
-.shield-preview-box {
-    background: rgba(0,0,0,0.25);
-    border: 1px solid var(--border-color);
-    border-radius: 20px;
-    padding: 25px;
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.status-badge {
-    display: inline-block;
-    background: rgba(59, 130, 246, 0.15);
-    border: 1px solid var(--color-primary);
-    color: var(--color-primary);
-    padding: 6px 16px;
-    border-radius: 20px;
-    font-size: 13px;
-    font-weight: 700;
-    margin-bottom: 15px;
-}
-
-.timer-circle-wrapper {
-    width: 110px;
-    height: 110px;
-    border-radius: 50%;
-    border: 3px solid var(--color-primary);
-    box-shadow: 0 0 20px var(--color-primary-glow);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin: 20px auto;
-}
-
-.timer-number { font-size: 30px; font-weight: 900; color: white; }
-.timer-circle-wrapper p { font-size: 11px; color: var(--text-muted); }
-
-.redirect-actions { display: flex; flex-direction: column; gap: 10px; margin-top: 15px; }
-
-.result-box-container {
-    background: rgba(0,0,0,0.3);
-    border: 1px solid var(--border-color);
-    padding: 15px;
-    border-radius: 16px;
-    margin-top: 15px;
-}
-
-.result-btn-grid { display: flex; gap: 10px; margin-top: 10px; }
 
 .btn-primary, .btn-secondary {
     width: 100%;
@@ -368,39 +290,22 @@ header {
     font-weight: 800;
     font-size: 15px;
     cursor: pointer;
-    transition: all 0.2s ease;
 }
 
 .btn-primary { background: linear-gradient(135deg, var(--color-primary), #1d4ed8); color: white; }
 .btn-secondary { background: rgba(255,255,255,0.08); color: white; border: 1px solid var(--border-color); }
 
-.btn-primary:hover, .btn-secondary:hover { transform: translateY(-2px); filter: brightness(1.1); }
+.status-msg { font-size: 11px; color: var(--color-accent); margin-top: 5px; }
+.placeholder-text { text-align: center; color: var(--text-muted); font-size: 14px; padding: 40px 0; }
 
-.features { max-width: 1100px; margin: 0 auto 70px; padding: 0 20px; }
-.features-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; }
-.feature-box { background: var(--bg-card); padding: 25px; border-radius: 18px; border: 1px solid var(--border-color); text-align: center; }
+.developer-section { max-width: 600px; margin: 0 auto 50px; padding: 0 20px; }
+.developer-card { background: var(--bg-card); border: 1px solid var(--border-color); padding: 25px; border-radius: 20px; text-align: center; }
+.developer-avatar { width: 65px; height: 65px; background: rgba(255,255,255,0.05); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; margin: 0 auto 12px; }
+.developer-links { display: flex; justify-content: center; gap: 12px; margin-top: 15px; flex-wrap: wrap; }
+.developer-links div { background: rgba(255,255,255,0.04); padding: 6px 14px; border-radius: 8px; font-weight: 700; font-size: 13px; }
 
-.developer-section { max-width: 700px; margin: 0 auto 70px; padding: 0 20px; }
-.developer-card { background: var(--bg-card); border: 1px solid var(--border-color); padding: 30px; border-radius: 22px; text-align: center; }
-.developer-avatar { width: 75px; height: 75px; background: rgba(255,255,255,0.05); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; margin: 0 auto 15px; }
-.developer-links { display: flex; justify-content: center; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
-.developer-links div { background: rgba(255,255,255,0.04); padding: 8px 16px; border-radius: 10px; border: 1px solid var(--border-color); font-weight: 700; font-size: 14px; }
+#topBtn { position: fixed; bottom: 25px; left: 25px; background: var(--color-primary); color: white; border: none; width: 45px; height: 45px; border-radius: 50%; cursor: pointer; display: none; }
+footer { text-align: center; padding: 30px 20px; background-color: #050811; border-top: 1px solid var(--border-color); color: var(--text-muted); font-size: 13px; }
 
-#topBtn { position: fixed; bottom: 30px; left: 30px; background: linear-gradient(135deg, var(--color-primary), var(--color-pink)); color: white; border: none; width: 48px; height: 48px; border-radius: 50%; cursor: pointer; display: none; z-index: 999; }
-
-footer { text-align: center; padding: 40px 20px; background-color: #050811; border-top: 1px solid var(--border-color); color: var(--text-muted); font-size: 14px; }
-
-.background { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.04; pointer-events: none; }
-.background span { position: absolute; display: block; width: 25px; height: 25px; background: #ffffff; animation: floatingBubbles 25s linear infinite; bottom: -150px; }
-.background span:nth-child(1) { left: 25%; width: 80px; height: 80px; animation-delay: 0s; }
-.background span:nth-child(2) { left: 10%; width: 30px; height: 30px; animation-delay: 2s; animation-duration: 12s; }
-.background span:nth-child(3) { left: 70%; width: 25px; height: 25px; animation-delay: 4s; }
-.background span:nth-child(4) { left: 40%; width: 60px; height: 60px; animation-delay: 0s; animation-duration: 18s; }
-.background span:nth-child(5) { left: 85%; width: 45px; height: 45px; animation-delay: 5s; }
-.background span:nth-child(6) { left: 60%; width: 20px; height: 20px; animation-delay: 8s; }
-
-@keyframes floatingBubbles {
-    0% { transform: translateY(0) rotate(0deg); opacity: 1; border-radius: 4px; }
-    100% { transform: translateY(-1200px) rotate(720deg); opacity: 0; border-radius: 50%; }
-}
-
+.result-box-container { background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); padding: 15px; border-radius: 14px; }
+.result-btn-grid { display: flex; gap: 10px; margin-top: 10px; }
