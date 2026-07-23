@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abood Link Shield | حامي ومختصر الروابط الذكي</title>
+    <meta name="description" content="منصة آمنة لاختصار الروابط وفحصها وإنشاء صفحات توجيه احترافية بعدادات أنيميشن زجاجية.">
+    <meta name="theme-color" content="#0a0f1c">
+    
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- شريط التقدم العلوي -->
+    <div id="scrollProgress"></div>
+
+    <!-- شاشة التحميل الترحيبية -->
+    <div id="splash">
+        <div class="splash-content">
+            <div class="logo-circle">🛡️</div>
+            <h1>Abood Link Shield</h1>
+            <p>جاري تحضير جدار الأمان وحماية الروابط...</p>
+            <div class="loading-bar">
+                <div class="loading-fill"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- الخلفية المتحركة -->
+    <div class="background">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+    <button id="topBtn">⬆</button>
+
+    <!-- شريط التنبيهات المباشرة -->
+    <div id="liveToastContainer" class="toast-container"></div>
+
+    <!-- الهيدر -->
+    <header>
+        <nav class="navbar">
+            <div class="logo">🚀 Abood Link Shield</div>
+            <div class="nav-links">
+                <a href="#profile-section">حسابي</a>
+                <a href="#protector-section">الأداة</a>
+                <a href="#features">المميزات</a>
+                <a href="#developer">المطور</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- واجهة الصفحة الرئيسية -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>منصة اختصار وحماية الروابط الذكية 👑</h1>
+            <p>أنشئ رابطاً آمناً ومختصراً يحتوي على صفحة انتظار أنيقة وفحص سلامة تفاعلي بضغطة زر واحدة!</p>
+        </div>
+    </section>
+
+    <!-- قسم إعدادات الحساب -->
+    <section id="profile-section" class="profile-container">
+        <div class="profile-card">
+            <h2>👤 إعدادات بروفايلك في المنصة</h2>
+            <p class="subtitle">يتم حفظ بياناتك تلقائياً لإظهار نشاطاتك الحقيقية في الموقع عند اختصار الروابط</p>
+
+            <div class="profile-form">
+                <input type="text" id="userNameInput" placeholder="أدخل اسمك هنا (مثل: عبدالله)..." autocomplete="off">
+                <div class="gender-selector">
+                    <button class="gender-btn active" data-gender="male">👨‍✈️ ذكر (♂️)</button>
+                    <button class="gender-btn" data-gender="female">👩‍✈️ أنثى (♀️)</button>
+                </div>
+                <button id="saveProfileBtn" class="btn-primary">حفظ البروفايل وتأكيد 🚀</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- أداة الاختصار والحماية الرئيسية -->
+    <section id="protector-section" class="editor-container">
+        <div class="editor-grid">
+            
+            <!-- لوحة إنشاء الرابط المحمي (اليمين) -->
+            <div class="controls-card">
+                <h2>🔗 أدوات إنشاء الرابط المحمي</h2>
+                
+                <div class="control-group">
+                    <label>🌐 أدخل الرابط الأصلي المطلوب حمايته:</label>
+                    <input type="url" id="targetUrlInput" class="styled-input" placeholder="https://example.com/file..." autocomplete="off">
+                </div>
+
+                <div class="control-group">
+                    <label>⏳ زمن الانتظار قبل التوجيه (بالثواني):</label>
+                    <select id="timerSelect" class="styled-select">
+                        <option value="5">5 ثوانٍ (سريع)</option>
+                        <option value="10" selected>10 ثوانٍ (متوسط)</option>
+                        <option value="15">15 ثانية (موصى به)</option>
+                        <option value="20">20 ثانية (أقصى أمان)</option>
+                    </select>
+                </div>
+
+                <div class="control-group">
+                    <label>📝 اسم الرابط / العنوان الوصفي (اختياري):</label>
+                    <input type="text" id="linkTitleInput" class="styled-input" placeholder="مثال: رابط تحميل الملف النهائي...">
+                </div>
+
+                <button id="generateShieldBtn" class="btn-primary btn-click-effect">⚡ إنشاء رابط الحماية فوراً</button>
+            </div>
+
+            <!-- لوحة المعاينة وتجربة صفحة الانتظار (اليسار) -->
+            <div class="preview-card">
+                <h2>👁️ شاشة اختبار وحماية الرابط</h2>
+                
+                <div class="shield-preview-box">
+                    <div class="status-badge" id="shieldStatusBadge">🛡️ جاهز للاختبار</div>
+                    <h3 id="previewTitleDisplay">رابطك المحمي جاهز للتوجه</h3>
+                    
+                    <div class="timer-circle-wrapper">
+                        <div class="timer-number" id="timerDisplay">10</div>
+                        <p>ثانية متبقية لفتح الرابط</p>
+                    </div>
+
+                    <div class="redirect-actions">
+                        <button id="startShieldBtn" class="btn-secondary">▶️ بدء فحص الأمان والعداد</button>
+                        <button id="goTargetBtn" class="download-btn premium-btn" disabled>🔒 يرجى انتظار العداد...</button>
+                    </div>
+                </div>
+
+                <!-- صندوق الروابط الناتجة -->
+                <div id="resultBox" class="result-box-container" style="display: none;">
+                    <label>🔗 رابط التوجيه المحمي الناتج:</label>
+                    <input type="text" id="generatedUrlInput" class="styled-input" readonly>
+                    <div class="result-btn-grid">
+                        <button id="copyUrlBtn" class="btn-primary">📋 نسخ الرابط</button>
+                        <button id="openUrlNewTabBtn" class="btn-secondary">👁️ فتح بالمتصفح بصفحة جديدة</button>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- المميزات -->
+    <section id="features" class="features">
+        <h2 class="section-title">✨ مميزات الحامي الذكي</h2>
+        <div class="features-grid">
+            <div class="feature-box">⚡<h3>توجيه سريع ومباشر</h3><p>فتح مباشر في أي متصفح بصفحة مستقلة لتجنب قيود التطبيقات.</p></div>
+            <div class="feature-box">🛡️<h3>فحص سلامة الرابط</h3><p>شاشة انتظار تفاعلية مع عداد نيون زجاجي أنيق لحماية زوارك.</p></div>
+            <div class="feature-box">📋<h3>نسخ وتتبع</h3><p>حفظ اسمك وجنسك وإظهار تنبيهات حية فورية عند إنشاء ونشر الروابط.</p></div>
+            <div class="feature-box">🔒<h3>بدون خوادم خارجية</h3><p>يعمل بمرونة على المتصفح مباشرة لضمان أقصى سرعة واستقرارية.</p></div>
+        </div>
+    </section>
+
+    <!-- كرت المطور -->
+    <section id="developer" class="developer-section">
+        <h2 class="section-title">👨‍💻 المطور</h2>
+        <div class="developer-card">
+            <div class="developer-avatar">🚀</div>
+            <h3>عبدالله</h3>
+            <p>مطور تطبيقات أندرويد ومصمم مشاريع ويب تقنية حديثة.</p>
+            <div class="developer-links">
+                <div>📱 TikTok 1: dark4abod</div>
+                <div>📱 TikTok 2: 1K__e___r</div>
+                <div>✈️ Telegram: rasf10</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- الفوتر -->
+    <footer>
+        <h2>Abood Link Shield</h2>
+        <p>جميع الحقوق محفوظة © <span id="year"></span></p>
+        <p>تم تصميم وتطوير المنصة بواسطة عبدالله</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
