@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Abood Link Shield Pro | حامي ومختصر الروابط الذكي</title>
-    <meta name="description" content="منصة حماية الروابط، التوجيه الذكي، ورفع الملفات مع صفحات توجيه مخصصة بالكامل.">
+    <title>Abood Link Shield Pro | حامي ومختصر الروابط المشفر</title>
+    <meta name="description" content="منصة حماية الروابط المتقدمة مع تشفير البيانات وتوجيه الزوار الآمن.">
     <meta name="theme-color" content="#0a0f1c">
     
     <link rel="stylesheet" href="style.css">
@@ -12,21 +12,21 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
 </head>
-<body>
+<body id="bodyRoot">
 
     <!-- ========================================================================== -->
-    <!-- 1. صفحة التوجيه المنفصلة بالكامل (تظهر فقط للزائر عند فتح رابط محمي) -->
+    <!-- 1. صفحة التوجيه المشفرة بملء الشاشة (تظهر حصراً للزوار) -->
     <!-- ========================================================================== -->
     <div id="redirectView" class="fullscreen-redirect-view" style="display: none;">
         <div class="redirect-glass-card">
-            <div class="redirect-badge">🛡️ فحص الأمان والتوجيه</div>
+            <div class="redirect-badge">🛡️ رابط محمي ومشفّر أمنياً</div>
             
-            <h1 id="redirectTitleDisplay">جاري تحضير الرابط المحمي...</h1>
+            <h1 id="redirectTitleDisplay">جاري التحقق من الأمان...</h1>
             <p id="redirectCreatorDisplay" class="creator-tag">الرابط مُقدَّم بواسطة: عبدالله</p>
 
-            <!-- منطقة الإعلانات المتغيرة تلقائياً -->
+            <!-- صندوق الإعلانات التفاعلي بالثواني -->
             <div id="adRotationBanner" class="ad-banner-box">
-                <span id="adBannerText">📢 [إعلان نشط - جاري التدوير...]</span>
+                <span id="adBannerText">📢 [جاري تحميل الإعلانات الممولة...]</span>
             </div>
 
             <!-- العداد التنازلي -->
@@ -36,72 +36,62 @@
             </div>
 
             <button id="finalRedirectBtn" class="btn-primary redirect-btn" disabled>
-                ⏳ يرجى انتظار العداد...
+                ⏳ يرجى انتظار انتهاء العداد...
             </button>
         </div>
     </div>
 
     <!-- ========================================================================== -->
-    <!-- 2. واجهة لوحة التحكم والموقع الرئيسي (تظهر عند الدخول المباشر للموقع) -->
+    <!-- 2. لوحة التحكم والإدارة (تظهر فقط لصاحب الموقع) -->
     <!-- ========================================================================== -->
     <div id="mainDashboardView">
         
-        <!-- شريط التقدم العلوي -->
+        <!-- شريط التقدم -->
         <div id="scrollProgress"></div>
 
-        <!-- شاشة التحميل الترحيبية -->
+        <!-- شاشة الترحيب -->
         <div id="splash">
             <div class="splash-content">
                 <div class="logo-circle">🛡️</div>
                 <h1>Abood Link Shield Pro</h1>
-                <p>جاري تحضير استوديو الحماية والتوجيه...</p>
+                <p>جاري تشغيل لوحة التحكم الآمنة...</p>
                 <div class="loading-bar">
                     <div class="loading-fill"></div>
                 </div>
             </div>
         </div>
 
-        <!-- الخلفية المتحركة -->
         <div class="background">
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
+            <span></span><span></span><span></span><span></span><span></span><span></span>
         </div>
 
         <button id="topBtn">⬆</button>
-
-        <!-- شريط التنبيهات المباشرة -->
         <div id="liveToastContainer" class="toast-container"></div>
 
-        <!-- الهيدر -->
         <header>
             <nav class="navbar">
                 <div class="logo">🚀 Abood Link Shield Pro</div>
                 <div class="nav-links">
                     <a href="#profile-section">حسابي</a>
-                    <a href="#protector-section">الإنشاء</a>
+                    <a href="#protector-section">تشفير وإنشاء</a>
                     <a href="#developer">المطور</a>
                 </div>
             </nav>
         </header>
 
-        <!-- واجهة الهيرو -->
         <section class="hero">
             <div class="hero-content">
-                <h1>صانع صفحات التوجيه وحماية الروابط 👑</h1>
-                <p>اصنع صفحات توجيه احترافية بملء الشاشة، خصص الخلفية، وحدد معدل تدوير الإعلانات واسمك الشخصي بسهولة!</p>
+                <h1>نظام تشفير وحماية الروابط الاحترافي 👑</h1>
+                <p>أنشئ روابط توجيه مشفرة بالكامل، تحكم بمعدل ظهور الإعلانات لكل ثانية، واعرض هويتك بتميز!</p>
             </div>
         </section>
 
-        <!-- قسم إعدادات البروفايل -->
+        <!-- إعدادات الهوية -->
         <section id="profile-section" class="profile-container">
             <div class="profile-card">
-                <h2>👤 إعدادات هويتك كـ ناشر</h2>
+                <h2>👤 إعدادات هويتك لناشر الروابط</h2>
                 <div class="profile-form">
-                    <input type="text" id="userNameInput" placeholder="أدخل اسمك (مثل: عبدالله)..." autocomplete="off">
+                    <input type="text" id="userNameInput" placeholder="أدخل اسمك (مثال: عبدالله)..." autocomplete="off">
                     <div class="gender-selector">
                         <button class="gender-btn active" data-gender="male">👨‍✈️ ذكر (♂️)</button>
                         <button class="gender-btn" data-gender="female">👩‍✈️ أنثى (♀️)</button>
@@ -111,15 +101,13 @@
             </div>
         </section>
 
-        <!-- استوديو إنشاء الرابط -->
+        <!-- استوديو الإنشاء والتشفير -->
         <section id="protector-section" class="editor-container">
             <div class="editor-grid">
                 
-                <!-- لوحة الإعدادات (اليمين) -->
                 <div class="controls-card">
-                    <h2>🛠️ تخصيص وإنشاء رابط التوجيه</h2>
+                    <h2>🛠️ إنشاء رابط مشفر جديد</h2>
 
-                    <!-- نوع الهدف -->
                     <div class="control-group">
                         <label>🌐 نوع المحتوى:</label>
                         <div class="type-selector-tabs">
@@ -129,20 +117,19 @@
                     </div>
 
                     <div id="urlInputContainer" class="control-group">
-                        <label>🔗 الرابط الأصلي المراد حمايته:</label>
-                        <input type="url" id="targetUrlInput" class="styled-input" placeholder="https://example.com/file...">
+                        <label>🔗 الرابط المراد تشفيره وحمايته:</label>
+                        <input type="url" id="targetUrlInput" class="styled-input" placeholder="https://example.com...">
                     </div>
 
                     <div id="fileInputContainer" class="control-group" style="display: none;">
-                        <label>📁 اختر الملف من الجهاز:</label>
+                        <label>📁 اختر الملف من جهازك:</label>
                         <input type="file" id="fileUploaderInput" class="styled-input">
                         <p id="fileStatusText" class="status-msg"></p>
                     </div>
 
-                    <!-- تخصيص اسم الناشر والعنوان -->
                     <div class="control-group">
-                        <label>📝 عنوان الصفحة المخصص:</label>
-                        <input type="text" id="linkTitleInput" class="styled-input" placeholder="مثال: تطبيق أندرويد محمي جاهز للتحميل">
+                        <label>📝 عنوان صفحة التوجيه:</label>
+                        <input type="text" id="linkTitleInput" class="styled-input" placeholder="مثال: تطبيق محمي وجاهز للتحميل">
                     </div>
 
                     <div class="control-group">
@@ -150,9 +137,8 @@
                         <input type="text" id="creatorNameInput" class="styled-input" placeholder="أدخل اسمك (مثال: عبدالله)">
                     </div>
 
-                    <!-- تخصيص الوقت والإعلانات -->
                     <div class="control-group">
-                        <label>⏳ زمن الانتظار (حتى 4 دقائق):</label>
+                        <label>⏳ زمن الانتظار:</label>
                         <select id="timerSelect" class="styled-select">
                             <option value="10">10 ثوانٍ</option>
                             <option value="30">30 ثانية</option>
@@ -164,58 +150,55 @@
                     </div>
 
                     <div class="control-group">
-                        <label>🔄 معدل تدوير وتغيير الإعلان أثناء العداد:</label>
+                        <label>🔄 معدل تدوير الإعلان (بالثواني):</label>
                         <select id="adRotateIntervalSelect" class="styled-select">
-                            <option value="5">كل 5 ثوانٍ (إعلان جديد)</option>
+                            <option value="2">كل ثانية2 (سريع جداً)</option>
+                            <option value="5">كل 5 ثوانٍ</option>
                             <option value="10" selected>كل 10 ثوانٍ</option>
                             <option value="20">كل 20 ثانية</option>
                             <option value="30">كل 30 ثانية</option>
-                            <option value="60">كل دقيقة</option>
                         </select>
                     </div>
 
                     <div class="control-group">
-                        <label>💰 معرف الإعلانات الخاص بك (Publisher / Ad Unit ID):</label>
-                        <input type="text" id="adIdInput" class="styled-input" placeholder="مثال: pub-1234567890">
+                        <label>💰 معرف الإعلانات (Ad Unit / Publisher ID):</label>
+                        <input type="text" id="adIdInput" class="styled-input" placeholder="مثال: pub-9988776655">
                     </div>
 
-                    <!-- تخصيص خلفية صفحة التوجيه -->
                     <div class="control-group">
                         <label>🖼️ رابط صورة خلفية صفحة التوجيه (اختياري):</label>
-                        <input type="url" id="bgImageUrlInput" class="styled-input" placeholder="https://example.com/background.jpg">
+                        <input type="url" id="bgImageUrlInput" class="styled-input" placeholder="https://example.com/bg.jpg">
                     </div>
 
-                    <button id="generateShieldBtn" class="btn-primary">⚡ إنشاء رابط التوجيه المحمي</button>
+                    <button id="generateShieldBtn" class="btn-primary">🔐 تشفير وإنشاء الرابط المحمي</button>
                 </div>
 
-                <!-- لوحة المعاينة المباشرة (اليسار) -->
                 <div class="preview-card">
-                    <h2>👁️ النتيجة والروابط المنشأة</h2>
+                    <h2>👁️ الرابط المشفر الناتج</h2>
                     
                     <div id="resultBox" class="result-box-container" style="display: none;">
-                        <label>🔗 رابط التوجيه المحمي المباشر:</label>
+                        <label>🔗 الرابط المشفر الآمن:</label>
                         <input type="text" id="generatedUrlInput" class="styled-input" readonly>
                         
                         <div class="result-btn-grid">
                             <button id="copyUrlBtn" class="btn-primary">📋 نسخ الرابط</button>
-                            <button id="testLiveUrlBtn" class="btn-secondary">🚀 تجربة فتح الرابط كـ زائر</button>
+                            <button id="testLiveUrlBtn" class="btn-secondary">🚀 تجربة كـ زائر</button>
                         </div>
                     </div>
 
                     <div id="noResultPlaceholder" class="placeholder-text">
-                        قم بتعبئة الخيارات واضغط "إنشاء رابط التوجيه" ليظهر الرابط المحمي هنا جاهزاً للمشاركة.
+                        قم بإدخال بيانات الرابط واضغط "تشفير وإنشاء" ليظهر الرابط المشفر تماماً هنا.
                     </div>
                 </div>
 
             </div>
         </section>
 
-        <!-- المطور والفوتر -->
         <section id="developer" class="developer-section">
             <div class="developer-card">
                 <div class="developer-avatar">🚀</div>
                 <h3>عبدالله</h3>
-                <p>مطور تطبيقات ومشاريع ويب متقدمة.</p>
+                <p>مطور تطبيقات ومنصات الويب المتطورة.</p>
                 <div class="developer-links">
                     <div>📱 TikTok 1: dark4abod</div>
                     <div>📱 TikTok 2: 1K__e___r</div>
